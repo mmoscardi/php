@@ -5,67 +5,42 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <!-- jquery -->
+  <title>Prueba Ajax</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <table class="tabla">
-    <tr id="row1">
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>
-        <form action="ajaxForm.php" method="post">
-          <input type="hidden" name="nrodoc" value="1">
-          <input type="submit" value="Enviar">
-      </td>
-    </tr>
-    <tr id="row2">
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>
-        <form action="ajaxForm.php" method="post">
-          <input type="hidden" name="nrodoc" value="2">
-          <input type="submit" value="Enviar">
-      </td>
+  <h1>Prueba Ajax</h1>
+  <div class="resultado">
 
-    </tr>
-    <tr id="row3">
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>
-        <form action="ajaxForm.php" method="post">
-          <input type="hidden" name="nrodoc" value="3">
-          <input type="submit" value="Enviar">
-      </td>
-
-    </tr>
-  </table>
-
+  </div>
   <script>
     $(document).ready(function() {
-      $("form").submit(function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var url = form.attr("action");
-        $.ajax({
-          type: "POST",
-          url: url,
-          data: form.serialize(),
-          success: function(data) {
-            console.log(data);
-            if (data == 1) {
-              $("#row" + data).remove();
-            }
+      $.ajax({
+        url: "https://api.coincap.io/v2/assets",
+        type: "GET",
+        success: function(data) {
+          for (let i = 0; i < data.data.length; i++) {
+            $(".resultado").append(`
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">${data.data[i].name}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">${data.data[i].symbol}</h6>
+                <p class="card-text">${data.data[i].priceUsd}</p>
+              </div>
+            </div>
+            `);
           }
-        });
+        },
+        error: function(error) {
+          console.log(error);
+        }
       });
     });
   </script>
+
 </body>
 
 </html>

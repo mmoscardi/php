@@ -37,7 +37,7 @@
   <script>
     $(document).ready(function() {
       $("#btnReset").click(function() {
-        $("#formPrueba").reset();
+        $("#formPrueba")[0].reset();
       
       });
     });
